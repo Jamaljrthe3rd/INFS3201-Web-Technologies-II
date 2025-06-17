@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Verification</title>
+</head>
+<body>
+    <h2>Verify Your Volunteer Account</h2>
+    <p>Enter the activation code sent to your email</p>
+
+    {{#if message}}
+        <p>{{message}}</p>
+    {{/if}}
+
+    <form action="/verify" method="POST">
+        <div>
+            <label>Email Address:</label>
+            <input type="email" name="email" required>
+        </div>
+        
+        <div>
+            <label>Activation Code:</label>
+            <input type="text" name="activationCode" required>
+            <small>Check your email for the activation code</small>
+        </div>
+        
+        <button type="submit">Verify Account</button>
+    </form>
+
+    <div>
+        <p>After verification, you'll be able to:</p>
+        <ul>
+            <li>Record visits to feeding stations</li>
+            <li>Upload photos of the cats</li>
+            <li>Report food and water levels</li>
+            <li>Report health issues or maintenance needs</li>
+        </ul>
+        <p><a href="/">Back to login</a></p>
+    </div>
+</body>
+</html>

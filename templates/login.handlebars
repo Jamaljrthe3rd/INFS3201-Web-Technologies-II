@@ -1,0 +1,21 @@
+{{#if message}}
+<div style="color: red;">
+    {{ message }}
+</div>
+{{/if}}
+
+<h2>Qatar Stray Cat Feeding System</h2>
+<p>Login to help monitor and maintain feeding stations</p>
+
+<form action="/" method="post">
+    <label>Username:</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>Password:</label><br>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<p><a href="/forgot-password">Forgot Password?</a></p>
+<p>Want to help feed stray cats? <a href="/register">Sign Up as a Volunteer</a></p>

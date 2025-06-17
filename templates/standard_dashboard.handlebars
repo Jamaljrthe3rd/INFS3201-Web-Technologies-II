@@ -1,0 +1,46 @@
+<h1>Welcome Volunteer {{ username }}</h1>
+
+<h2>Your Recent Feeding Station Visits</h2>
+{{#if visits.length}}
+    <ul>
+        {{#each visits}}
+            <li>{{ this.location }} - {{ this.date }}</li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>You haven't recorded any feeding station visits yet.</p>
+{{/if}}
+
+<h2>Record Station Visit</h2>
+<form method="post" action="/record-visit">
+    <label>Station:</label>
+    <select name="station" required>
+        <option value="">Select a feeding station</option>
+        {{#each stations}}
+            <option value="{{this._id}}">{{this.location}}</option>
+        {{/each}}
+    </select><br>
+
+    <label>Food Level:</label>
+    <select name="foodLevel" required>
+        <option value="full">Full</option>
+        <option value="half">Half Full</option>
+        <option value="low">Low</option>
+        <option value="empty">Empty</option>
+    </select><br>
+
+    <label>Water Level:</label>
+    <select name="waterLevel" required>
+        <option value="full">Full</option>
+        <option value="half">Half Full</option>
+        <option value="low">Low</option>
+        <option value="empty">Empty</option>
+    </select><br>
+
+    <label>Notes:</label>
+    <textarea name="notes" placeholder="Any issues or observations? (cats present, station maintenance needed, etc.)"></textarea><br>
+
+    <input type="submit" value="Record Visit">
+</form>
+
+<p><a href="/logout">Logout</a></p>
