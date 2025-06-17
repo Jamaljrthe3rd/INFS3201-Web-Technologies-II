@@ -58,14 +58,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // View engine setup
-app.set('views', __dirname + "/templates");
+app.engine('handlebars', handlebars.engine({
+    defaultLayout: 'main',
+    layoutsDir: __dirname + '/views/layouts',
+    partialsDir: __dirname + '/views/partials'
+}));
 app.set('view engine', 'handlebars');
-app.engine('handlebars', handlebars.engine());
+app.set('views', __dirname + '/views');
+
+// Home Page (Public)
+app.get('/', (req, res) => {
+    res.render('home', { layout: 'main' });
+});
 
 // Login Page
-app.get('/', (req, res) => {
-    console.log('Rendering login page');
-    res.render('login', { layout: undefined, message: req.query.message });
+app.get('/login', (req, res) => {
+    res.render('login', { layout: 'main', message: req.query.message });
 });
 
 // Login POST route
@@ -326,16 +334,27 @@ app.post("/hod/process", async (req, res) => {
 // Public route for viewing feeding sites
 app.get('/feeding-sites', async (req, res) => {
     try {
-        const sites = await persistence.getAllFeedingSites();
+        // Add some dummy posts for demonstration
+        const sites = (await persistence.getAllFeedingSites()).map(site => ({
+            ...site,
+            posts: [
+                { 
+                    author: 'Volunteer', 
+                    date: new Date().toISOString(), 
+                    content: 'Refilled food and water today. All cats look healthy!',
+                    image: '/images/cat1.jpg' 
+                },
+                { 
+                    author: 'Local Resident', 
+                    date: new Date(Date.now() - 86400000).toISOString(),
+                    content: 'Saw 3 new kittens near the feeding station.'
+                }
+            ]
+        }));
+        
         res.render('feeding-sites', { 
             layout: 'main',
-            sites,
-            user: req.user,
-            helpers: {
-                formatDate: function(date) {
-                    return new Date(date).toLocaleDateString();
-                }
-            }
+            sites: sites || []
         });
     } catch (error) {
         console.error('Error fetching feeding sites:', error);

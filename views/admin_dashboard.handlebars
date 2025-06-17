@@ -1,0 +1,65 @@
+<h1>Stray Cat Feeding System - Admin Dashboard</h1>
+<p>Welcome Administrator, {{ username }}</p>
+
+<h2>Feeding Stations Overview</h2>
+{{#if stations.length}}
+<table>
+    <tr>
+        <th>Location</th>
+        <th>Last Visit</th>
+        <th>Food Level</th>
+        <th>Water Level</th>
+    </tr>
+    {{#each stations}}
+    <tr>
+        <td>{{ this.location }}</td>
+        <td>{{ this.lastVisit }}</td>
+        <td>{{ this.foodLevel }}</td>
+        <td>{{ this.waterLevel }}</td>
+    </tr>
+    {{/each}}
+</table>
+{{else}}
+<p>No feeding stations registered yet.</p>
+{{/if}}
+
+<h2>Volunteers Awaiting Activation</h2>
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+    {{#each users}}
+    <tr>
+        <td>{{ this.UserName }}</td>
+        <td>{{ this.Email }}</td>
+        <td>
+            {{#if this.Active}}
+                ✅ Activated
+            {{else}}
+                <form method="post" action="/admin/activate">
+                    <input type="hidden" name="email" value="{{ this.Email }}">
+                    <button type="submit">Activate</button>
+                </form>
+            {{/if}}
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+<h2>Add New Feeding Station</h2>
+<form method="post" action="/admin/add-station">
+    <label>Location Description:</label>
+    <input type="text" name="location" required placeholder="e.g., Behind Main Library"><br>
+
+    <label>Coordinates:</label>
+    <input type="text" name="coordinates" placeholder="e.g., 25.3548° N, 51.1839° E"><br>
+
+    <label>Notes:</label>
+    <textarea name="notes" placeholder="Access instructions, nearby landmarks, etc."></textarea><br>
+
+    <input type="submit" value="Add Station">
+</form>
+
+<p><a href="/logout">Logout</a></p>
